@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Reset padrão para não sobrar espaços */
+        body { 
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: transparent; 
+        }
+        
+        /* Container da Logo - Posicionamento Superior Central */
+        .logo-container {
+            position: absolute;
+            top: 5px; /* Valor menor para ficar bem no topo */
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .logo-container img {
+            width: 220px; /* Ajuste o tamanho da logo aqui */
+            /* Sombra removida conforme solicitado */
+            filter: none; 
+        }
+
+        /* HUD de Necessidades (Canto Inferior Direito) */
+        .hud-container {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 180px;
+            background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #ffffff; /* Detalhe lateral branco */
+        }
+
+        .stat-row { margin-bottom: 8px; }
+        .stat-row:last-child { margin-bottom: 0; }
+        
+        .stat-label { 
+            color: white; 
+            font-size: 10px; 
+            margin-bottom: 4px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+
+        .bar-bg { 
+            width: 100%; 
+            height: 6px; 
+            background: rgba(255, 255, 255, 0.1); 
+            border-radius: 3px; 
+        }
+
+        .bar-fill { 
+            height: 100%; 
+            border-radius: 3px;
+            transition: width 0.4s ease-in-out; 
+        }
+        
+        /* Cores das Barras */
+        .fome { background: #E67E22; } /* Laranja */
+        .sede { background: #3498DB; } /* Azul */
+        .sono { background: #9B59B6; } /* Roxo */
+    </style>
+</head>
+<body>
+
+<div class="logo-container">
+    <img src="logo.png" alt="Duster Logo">
+</div>
+
+    <div class="hud-container">
+        <div class="stat-row">
+            <div class="stat-label">Fome</div>
+            <div class="bar-bg"><div id="fome-bar" class="bar-fill fome" style="width: 100%;"></div></div>
+        </div>
+        <div class="stat-row">
+            <div class="stat-label">Sede</div>
+            <div class="bar-bg"><div id="sede-bar" class="bar-fill sede" style="width: 100%;"></div></div>
+        </div>
+        <div class="stat-row">
+            <div class="stat-label">Sono</div>
+            <div class="bar-bg"><div id="sono-bar" class="bar-fill sono" style="width: 100%;"></div></div>
+        </div>
+    </div>
+
+    <script>
+        // Função chamada pelo servidor (PAWN) para atualizar as barras
+        // Valores devem ser de 0 a 100
+        function atualizarHud(fome, sede, sono) {
+            document.getElementById('fome-bar').style.width = fome + '%';
+            document.getElementById('sede-bar').style.width = sede + '%';
+            document.getElementById('sono-bar').style.width = sono + '%';
+        }
+    </script>
+</body>
+</html>
