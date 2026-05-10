@@ -71,21 +71,27 @@
 </div>
 
 <script>
-    // Essa é a função que o seu cef_emit_event no Pawn vai chamar
-    function updateData(speed, fuel) {
-        // Atualiza o número da velocidade com zeros à esquerda (ex: 005)
-        document.getElementById('speed').innerText = speed.toString().padStart(3, '0');
-        
-        // Atualiza a largura da barra de combustível
-        document.getElementById('fuel-level').style.width = fuel + '%';
-        
-        // Mudar cor da barra se o combustível estiver baixo (Opcional)
-        if (fuel < 20) {
-            document.getElementById('fuel-level').style.background = 'linear-gradient(90deg, #ff4b2b, #ff416c)';
-        } else {
-            document.getElementById('fuel-level').style.background = 'linear-gradient(90deg, #deff9a, #a8ff78)';
+    // Definimos a função globalmente para o CEF encontrar
+    window.updateData = function(speed, fuel) {
+        // Garantimos que os valores cheguem como números
+        const s = parseInt(speed) || 0;
+        const f = parseInt(fuel) || 0;
+
+        // Atualiza o texto com 3 dígitos (ex: 005, 080)
+        const speedElement = document.getElementById('speed');
+        if(speedElement) {
+            speedElement.innerText = s.toString().padStart(3, '0');
         }
-    }
+
+        // Atualiza a barra de combustível
+        const fuelElement = document.getElementById('fuel-level');
+        if(fuelElement) {
+            fuelElement.style.width = f + '%';
+        }
+    };
+
+    // Teste de conexão (aparecerá no console do CEF - F12 no jogo)
+    console.log("Interface do Velocímetro Carregada e Pronta.");
 </script>
 </body>
 </html>
