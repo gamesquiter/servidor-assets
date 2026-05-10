@@ -3,23 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>velocimetro</title>
+    <title>Velocimetro Style Capital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: transparent; /* Importante para não tapar o jogo */
+        }
+
+        #speedo-container {
+            position: absolute;
+            bottom: 40px;
+            right: 50px;
+            text-align: right;
+            user-select: none;
+        }
+
+        .speed-text {
+            font-family: 'Roboto', sans-serif;
+            font-size: 55px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0px 0px 10px rgba(0,0,0,0.8);
+            letter-spacing: -2px;
+            font-style: italic;
+        }
+
+        .kmh-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: #deff9a;
+            margin-left: -5px;
+            text-shadow: 0px 0px 5px rgba(222, 255, 154, 0.5);
+        }
+
+        .fuel-container {
+            width: 120px;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.4);
+            margin-top: -5px;
+            border-radius: 10px;
+            overflow: hidden;
+            float: right;
+        }
+
+        #fuel-level {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #deff9a, #a8ff78);
+            box-shadow: 0px 0px 10px #deff9a;
+            transition: width 0.3s ease-in-out; /* Deixa a barra suave */
+        }
+    </style>
 </head>
 <body>
-    <div id="speedo-container" style="position: absolute; bottom: 20px; right: 20px; font-family: sans-serif; color: white;">
-    <div style="font-size: 40px; font-weight: bold; text-shadow: 2px 2px 4px #000;">
-        <span id="speed">000</span> <small style="font-size: 15px; color: #deff9a;">KM/H</small>
+
+<div id="speedo-container">
+    <div class="speed-text">
+        <span id="speed">000</span>
+        <span class="kmh-label">KM/H</span>
     </div>
-    <div id="fuel-bar" style="width: 100px; height: 5px; background: #333; margin-top: 5px;">
-        <div id="fuel-level" style="width: 100%; height: 100%; background: #deff9a;"></div>
+    <div class="fuel-container">
+        <div id="fuel-level"></div>
     </div>
 </div>
 
 <script>
-    // Função que o Pawn vai chamar
+    // Essa é a função que o seu cef_emit_event no Pawn vai chamar
     function updateData(speed, fuel) {
-        document.getElementById('speed').innerHTML = speed.toString().padStart(3, '0');
+        // Atualiza o número da velocidade com zeros à esquerda (ex: 005)
+        document.getElementById('speed').innerText = speed.toString().padStart(3, '0');
+        
+        // Atualiza a largura da barra de combustível
         document.getElementById('fuel-level').style.width = fuel + '%';
+        
+        // Mudar cor da barra se o combustível estiver baixo (Opcional)
+        if (fuel < 20) {
+            document.getElementById('fuel-level').style.background = 'linear-gradient(90deg, #ff4b2b, #ff416c)';
+        } else {
+            document.getElementById('fuel-level').style.background = 'linear-gradient(90deg, #deff9a, #a8ff78)';
+        }
     }
 </script>
 </body>
