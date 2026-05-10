@@ -3,58 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velocimetro Style Capital</title>
+    <title>Velocimetro Duster</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@900&display=swap" rel="stylesheet">
-    
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: transparent; /* Importante para não tapar o jogo */
-        }
-
+        body { margin: 0; overflow: hidden; background: transparent; }
         #speedo-container {
-            position: absolute;
-            bottom: 40px;
-            right: 50px;
-            text-align: right;
-            user-select: none;
+            position: absolute; bottom: 40px; right: 50px;
+            text-align: right; user-select: none;
         }
-
         .speed-text {
-            font-family: 'Roboto', sans-serif;
-            font-size: 55px;
-            font-weight: 900;
-            color: white;
+            font-family: 'Roboto', sans-serif; font-size: 55px;
+            font-weight: 900; color: white; font-style: italic;
             text-shadow: 0px 0px 10px rgba(0,0,0,0.8);
-            letter-spacing: -2px;
-            font-style: italic;
         }
-
         .kmh-label {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            color: #deff9a;
-            margin-left: -5px;
-            text-shadow: 0px 0px 0px rgba(222, 255, 154, 0.5);
+            font-family: 'Orbitron', sans-serif; font-size: 14px;
+            color: #deff9a; margin-left: -5px;
         }
-
         .fuel-container {
-            width: 120px;
-            height: 4px;
-            background: rgba(0, 0, 0, 0.4);
-            margin-top: -5px;
-            border-radius: 10px;
-            overflow: hidden;
-            float: right;
+            width: 120px; height: 4px; background: rgba(0, 0, 0, 0.4);
+            margin-top: -5px; border-radius: 10px; overflow: hidden; float: right;
         }
-
         #fuel-level {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             background: linear-gradient(90deg, #deff9a, #a8ff78);
-            box-shadow: 0px 0px 7px #deff9a;
-            transition: width 0.3s ease-in-out; /* Deixa a barra suave */
+            transition: width 0.3s ease-in-out;
         }
     </style>
 </head>
@@ -71,27 +44,26 @@
 </div>
 
 <script>
-    // Definimos a função globalmente para o CEF encontrar
-    window.updateData = function(speed, fuel) {
-        // Garantimos que os valores cheguem como números
-        const s = parseInt(speed) || 0;
-        const f = parseInt(fuel) || 0;
+    // Esta é a função que vai processar os dados
+    function atualizarInterface(speed, fuel) {
+        document.getElementById('speed').innerText = speed.toString().padStart(3, '0');
+        document.getElementById('fuel-level').style.width = fuel + '%';
+    }
 
-        // Atualiza o texto com 3 dígitos (ex: 005, 080)
-        const speedElement = document.getElementById('speed');
-        if(speedElement) {
-            speedElement.innerText = s.toString().padStart(3, '0');
+    // AGUARDA O PLUGIN ESTAR PRONTO
+    document.addEventListener("DOMContentLoaded", function() {
+        // Tenta registrar o evento assim que possível
+        if (typeof cef !== 'undefined') {
+            cef.on("v_atualizar", atualizarInterface);
+        } else {
+            // Se o 'cef' ainda não existir, tenta de novo em 500ms
+            setTimeout(() => {
+                if (typeof cef !== 'undefined') {
+                    cef.on("v_atualizar", atualizarInterface);
+                }
+            }, 500);
         }
-
-        // Atualiza a barra de combustível
-        const fuelElement = document.getElementById('fuel-level');
-        if(fuelElement) {
-            fuelElement.style.width = f + '%';
-        }
-    };
-
-    // Teste de conexão (aparecerá no console do CEF - F12 no jogo)
-    console.log("Interface do Velocímetro Carregada e Pronta.");
+    });
 </script>
 </body>
 </html>
